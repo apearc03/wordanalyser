@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TextFileReader {
+public class TextFileStatisticExtractor {
 
     private static final String WORD_SEPARATOR_REGEX = "[\\s.;,]+";
 
@@ -15,19 +15,18 @@ public class TextFileReader {
 
     private static int WORD_COUNT = 0;
 
-    static TextFileStatistics readFile(final String textFilePath) throws IOException {
+    static TextFileStatistics extract(final String textFilePath) throws IOException {
         Files.lines(Paths.get(textFilePath))
                 .flatMap(line -> Arrays.stream(line.split(WORD_SEPARATOR_REGEX)))
-                .forEach(TextFileReader::analyseWord);
+                .forEach(TextFileStatisticExtractor::processWord);
 
         return new TextFileStatistics(WORD_COUNT, WORD_LENGTH_TO_COUNT);
     }
 
-    private static void analyseWord(final String word){
+    private static void processWord(final String word) {
         WORD_COUNT++;
         WORD_LENGTH_TO_COUNT.compute(word.length(),
                 (k, v) -> v == null ? 1 : v + 1);
     }
-
 
 }
