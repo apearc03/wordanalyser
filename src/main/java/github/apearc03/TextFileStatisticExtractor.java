@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class TextFileStatisticExtractor {
 
-    private static final String WORD_SEPARATOR_REGEX = "[\\s.;,]+";
+    private static final String WORD_SEPARATOR_REGEX = "[\\s.;:,*(){}]+";
 
     private static final Map<Integer, Integer> WORD_LENGTH_TO_COUNT = new HashMap<>();
 
@@ -18,6 +18,7 @@ public class TextFileStatisticExtractor {
     static TextFileStatistics extract(final String textFilePath) throws IOException {
         Files.lines(Paths.get(textFilePath))
                 .flatMap(line -> Arrays.stream(line.split(WORD_SEPARATOR_REGEX)))
+                .filter(word -> !word.isEmpty())
                 .forEach(TextFileStatisticExtractor::processWord);
 
         return new TextFileStatistics(WORD_COUNT, WORD_LENGTH_TO_COUNT);

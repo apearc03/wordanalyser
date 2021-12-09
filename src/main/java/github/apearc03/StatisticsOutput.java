@@ -17,7 +17,9 @@ public class StatisticsOutput {
                 .append(format(AVG_WORD_LENGTH, stats.getAvgWordLength()))
                 .append(wordLengths(stats))
                 .append(frequentlyOccurringWordLengths(stats));
-        return output.replace(output.lastIndexOf(","), output.lastIndexOf(",") + 1, " &").toString();
+        return stats.getFrequentlyOccurringLengths().size() > 1
+                ? output.replace(output.lastIndexOf(","), output.lastIndexOf(",") + 1, " &").toString()
+                : output.toString();
     }
 
     //need the ampersand instead of last comma
