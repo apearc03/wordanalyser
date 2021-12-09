@@ -9,7 +9,8 @@ public class WordAnalyser {
             System.out.println("Please append a single path of a text file.");
         } else {
             try {
-                final TextFileStatistics stats = TextFileStatisticExtractor.extract(args[0]);
+
+                final TextFileStatistics stats = new TextFileStatisticExtractor().extract(args[0]);
                 System.out.println(StatisticsOutput.output(stats));
             } catch (final IOException e) {
                 System.out.println("Error occurred handling text file");

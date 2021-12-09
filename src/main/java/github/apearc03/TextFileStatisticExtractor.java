@@ -9,24 +9,28 @@ import java.util.Map;
 
 public class TextFileStatisticExtractor {
 
-    private static final String WORD_SEPARATOR_REGEX = "[\\s.;:,*(){}]+";
+    static final String WORD_SEPARATOR_REGEX = "[\\s.;:,*(){}]+";
 
-    private static final Map<Integer, Integer> WORD_LENGTH_TO_COUNT = new HashMap<>();
+    private final Map<Integer, Integer> wordLengthToCount;
+    private int wordCount;
 
-    private static int WORD_COUNT = 0;
+    public TextFileStatisticExtractor() {
+        wordLengthToCount = new HashMap<>();
+        wordCount = 0;
+    }
 
-    static TextFileStatistics extract(final String textFilePath) throws IOException {
+    public TextFileStatistics extract(final String textFilePath) throws IOException {
         Files.lines(Paths.get(textFilePath))
                 .flatMap(line -> Arrays.stream(line.split(WORD_SEPARATOR_REGEX)))
                 .filter(word -> !word.isEmpty())
-                .forEach(TextFileStatisticExtractor::processWord);
+                .forEach(this::processWord);
 
-        return new TextFileStatistics(WORD_COUNT, WORD_LENGTH_TO_COUNT);
+        return new TextFileStatistics(wordCount, wordLengthToCount);
     }
 
-    private static void processWord(final String word) {
-        WORD_COUNT++;
-        WORD_LENGTH_TO_COUNT.compute(word.length(),
+    private void processWord(final String word) {
+        wordCount++;
+        wordLengthToCount.compute(word.length(),
                 (k, v) -> v == null ? 1 : v + 1);
     }
 

@@ -1,5 +1,6 @@
 package github.apearc03;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -32,7 +33,7 @@ public class TextFileStatistics {
                 .map(entry -> entry.getKey() * entry.getValue())
                 .reduce(Integer::sum)
                 .orElseThrow(() -> new RuntimeException("Error occurred summing word lengths from file."));
-        return (float) sumOfWordLengths / wordCount;
+        return new BigDecimal((float) sumOfWordLengths / wordCount).setScale(3, BigDecimal.ROUND_HALF_UP).floatValue();
     }
 
     private List<Integer> frequentlyOccurringLengths() {
